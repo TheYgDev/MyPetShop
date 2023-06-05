@@ -1,0 +1,35 @@
+﻿textarea {
+    width: 100%;
+    height: 100px;
+    background-color: lightgray;
+    border-radius: 6px 6px 6px 6px;
+    border-style: none solid solid none;
+    border-width: medium 1px 1px medium;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
+    color: #555555;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 1em;
+    line-height: 1.4em;
+    padding: 5px 8px;
+    transition: background-color 0.2s ease 0s;
+}
+
+
+    textarea:focus {
+        background: none repeat scroll 0 0 #FFFFFF;
+        outline-width: 0;
+    }
+
+
+.input-wrapper input {
+    background-color: #eee;
+    border: none;
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 13px;
+    box-shadow: 0 0.4rem #dfd9d9;
+}
+
+    .input-wrapper input:focus {
+        outline-color: #29a8ab;
+    }

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<App.DAL.Models.Animal>
+@{
+	ViewBag.Title = "Index";
+}
+@section css{
+	<link href="~/css/catalogpage.css" rel="stylesheet" />
+	<link href="~/css/buttons.css" rel="stylesheet" />
+	<link href="~/css/inputs.css" rel="stylesheet" />
+	<style>
+
+		.containerTop:nth-child(2) {
+			order: 2;
+		}
+		.containerTop :nth-child(2) {
+			order: 3;
+		}
+	</style>
+}
+@section scripts{
+}
+
+<div class="containerTop">
+	<vc:category-menu with-search="true"></vc:category-menu>
+	<form id="addButton" action="/Admin/AnimalAdd" method="get">
+		<button type="submit" class="animated-button add">Add Animal</button>
+	</form>
+
+</div>
+
+
+<table class="table table-striped table-bordered hoverable">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Name</th>
+			<th>Category</th>
+			<th>Description</th>
+		</tr>
+		@foreach (var animal in Model)
+		{
+			<tr class="table-row pic" onclick="location.href='@Url.Action("AnimalEdit","Admin",new{ id = animal.Id})'">
+				<td class="align-middle"><img class="AnimalPic" src="~/Images/@animal.PictureName" /></td>
+				<td class="align-middle">@animal.Name</td>
+				<td class="align-middle">@animal.Category!.Name</td>
+				<td class="align-middle">@animal.Description</td>
+
+			</tr>
+
+		}
+	</thead>
+	<tbody>
+	</tbody>
+</table>

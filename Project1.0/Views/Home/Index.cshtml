@@ -1,0 +1,30 @@
+﻿@model IEnumerable<App.DAL.Models.Animal>
+@{
+	ViewBag.Title = "Animals";
+}
+
+<h3 id="mostRated">Our Top Rated Animals of the Day!</h3>
+
+<table class="table table-striped table-bordered hoverable">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Name</th>
+			<th>Category</th>
+			<th>Description</th>
+			<th>Number of Comments</th>
+		</tr>
+		@foreach (var animal in Model)
+		{
+			<tr class="table-row" onclick="location.href='@Url.Action("Index","Animal", animal)'">
+				<td class="align-middle"><img class="AnimalPic" src="~/Images/@animal.PictureName" /></td>
+				<td class="align-middle">@animal.Name</td>
+				<td class="align-middle">@animal.Category!.Name</td>
+				<td class="align-middle">@animal.Description</td>
+				<td class="align-middle">@animal.Comments!.Count()</td>
+			</tr>
+		}
+	</thead>
+	<tbody>
+	</tbody>
+</table>

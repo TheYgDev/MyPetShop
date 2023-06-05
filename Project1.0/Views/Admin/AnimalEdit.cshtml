@@ -1,0 +1,149 @@
+﻿@model App.DAL.Models.Animal
+@{
+	ViewBag.Title = Model != null ? "AnimalEdit" : "AnimalAdd";
+	var Page = ViewBag.Title.Replace("Animal", "");
+	var action = Model != null ? "EditAnimal" : "AddAnimal";
+	var buttonValue = Model != null ? "Save Changes" : "Add Animal";
+	var url = $"/Admin/{action}";
+}
+
+@section css{
+	<link href="~/css/infopage.css" rel="stylesheet" />
+	<link href="~/css/inputs.css" rel="stylesheet" />
+	<link href="~/css/buttons.css" rel="stylesheet" />
+}
+
+
+<form id="animal-form" enctype="multipart/form-data" asp-action="@action" method="post">
+	<div class="outer-container animal-info">
+
+		<vc:Picture pic-path="@Model?.PictureName"></vc:Picture>
+
+		<div class="inner-container">
+			<div class="info-div">
+
+				<label class="label" asp-for="Name">Name: </label>
+				<div class="input-wrapper">
+					<input asp-for="Name" type="text" value="@Model?.Name" id="name" maxlength="20" placeholder="Name" required class="input search text" oninput="validateInput(event)" />
+				</div>
+				<br />
+				<label class="label" asp-for="Age">Age: </label>
+				<div class="input-wrapper">
+					<input asp-for="Age" type="number" value="@Model?.Age" id="age" maxlength="20" required placeholder="Age" class="input search" />
+				</div>
+
+			</div>
+
+			<div class="category-div">
+				<label class="label" asp-for="CategoryId">Category: </label>
+				<br />
+				<div class="dropdown">
+					<select class="dropdown-button" asp-for="CategoryId" id="category" required>
+						<option class="dropdown-item" value="" selected disabled hidden>Categories</option>
+						@foreach (var category in ViewBag.Categories)
+						{
+							if (Model != null && Model.CategoryId == category.Id)
+							{
+								<option class="dropdown-item" value="@category.Id" selected>@category.Name</option>
+							}
+							else
+							{
+								<option class="dropdown-item" value="@category.Id">@category.Name</option>
+							}
+						}
+					</select>
+				</div>
+			</div>
+			<div>
+				<label class="label" asp-for="Description">Description: </label>
+				<textarea asp-for="Description" maxlength="300" value="@Model?.Description" required placeholder="Add a Description..." rows="20" name="Description"
+		id="Description" cols="40" class="ui-autocomplete-input text" autocomplete="off" role="textbox"
+		aria-autocomplete="list" aria-haspopup="true"></textarea>
+			</div>
+		</div>
+	</div>
+	<div>
+		<span class="error-message" asp-validation-for="Name"></span>
+		<br />
+		<span class="error-message" asp-validation-for="Age"></span>
+		<br />
+		<span class="error-message" asp-validation-for="CategoryId"></span>
+		<br />
+		<span class="error-message" asp-validation-for="Description"></span>
+		<br />
+		<span class="error-message" asp-validation-for="PictureName"></span>
+	</div>
+	<div class="button">
+		<button type="submit" class="animated-button">@buttonValue</button>
+
+	</div>
+</form>
+@if (Page == "Edit")
+{
+	<div class="button">
+		<form action="/Admin/Delete" method="post">
+			<input type="hidden" name="id" value="@Model!.Id" />
+			<button type="submit" class="animated-button del">Delete</button>
+			@Html.AntiForgeryToken()
+		</form>
+	</div>
+}
+
+
+<style>
+	.input-wrapper input {
+		padding: 4px;
+	}
+
+	.button {
+		justify-content: center;
+		display: flex;
+	}
+
+	.error-message {
+		color: red;
+		font-size: 20px;
+	}
+</style>
+
+
+@section scripts{
+
+
+	<script src="~/js/sitejs/CheckSpaces.js"></script>
+	<script>
+		function validateInput(event) {
+			const input = event.target;
+			const inputValue = input.value;
+			const revisedValue = inputValue.replace(/[^A-Za-z\s]/g, '');
+
+			input.value = revisedValue;
+		}
+
+		$(document).ready(function () {
+			$('#animal-form').on('submit', function (event) {
+				event.preventDefault();
+				var formData = new FormData(this);
+
+				$.ajax({
+					url: '@url',
+					type: 'POST',
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function (response) {
+						if (response.success) {
+							alert(response.message);
+							window.location.replace('/Admin/Index');
+						} else {
+							alert(response.message);
+						}
+					},
+					error: function () {
+						alert('An error occurred\nPlease try again later');
+					}
+				});
+			});
+		});
+	</script>
+}

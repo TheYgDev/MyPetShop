@@ -1,0 +1,49 @@
+﻿.animal-info {
+    justify-content: space-between;
+}
+.AnimalPicPage {
+    width: 30%;
+    margin-inline-end: 50px;
+    border-radius:50%;
+}
+#commentForm{
+    width:35%;
+}
+.comment-section {
+    background-color: rgb(40, 40, 40,0.3);
+    border-radius: 20px;
+    padding: 20px;
+    align-items: flex-start;
+    justify-content: center;
+    display: flex;
+    flex: 1;
+    margin-left: 20px;
+}
+
+    .comment-section table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+    }
+
+    .comment-section th {
+        padding: 10px;
+        background-color: #82d8dc78;
+        border-radius: 10px;
+    }
+
+    .comment-section td {
+        padding: 10px;
+        border: 20px;
+        border-radius: 20px;
+        word-break: break-word;
+    }
+
+.label {
+    font-weight: bold;
+    font-size: 26px;
+}
+
+p {
+    font-size: 20px;
+}

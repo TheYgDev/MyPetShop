@@ -1,0 +1,96 @@
+﻿@model App.DAL.Models.Animal
+@{
+	ViewBag.Title = "Index";
+}
+@section css{
+	<link href="~/css/infopage.css" rel="stylesheet" />
+	<link href="~/css/inputs.css" rel="stylesheet" />
+	<link href="~/css/buttons.css" rel="stylesheet" />
+}
+
+
+
+<div class="outer-container animal-info">
+	<img class="AnimalPicPage" src="~/Images/@Model.PictureName" />
+	<div class="inner-container">
+
+		<div class="info-div">
+			<p>
+				<span class="label">Name:</span>
+				<br />
+				@Model.Name
+			</p>
+			<p><span class="label">Age:</span><br /> @Model.Age Years old</p>
+		</div>
+		<div class="category-div">
+			<p><span class="label">Category:</span><br /> @Model.Category!.Name</p>
+		</div>
+		<div>
+			<p><span class="label">Description:<br /></span> @Model.Description</p>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="outer-container">
+	<form id="commentForm" method="post" asp-action="AddComment">
+		<div>
+			<textarea  maxlength="200" required placeholder="Add a comment..." rows="20" name="comment[text]"
+					  id="text" cols="40" class="ui-autocomplete-input text" autocomplete="off" role="textbox"
+					  aria-autocomplete="list" aria-haspopup="true"></textarea>
+			<input type="hidden" name="AnimalId" value="@Model.Id" />
+		</div>
+		<div class="button">
+			<button type="submit" class="animated-button">Add Comment</button>
+		</div>
+
+	</form>
+	<div id="commentsContainer" class="comment-section">
+		<table id="comments-table">
+			<tr>
+				<th>Comments</th>
+			</tr>
+			@foreach (var comment in Model.Comments!)
+			{
+				<tr>
+					<td>@comment.Text</td>
+				</tr>
+			}
+		</table>
+	</div>
+</div>
+
+
+
+
+@section scripts{
+	<script src="~/js/sitejs/checkspaces.js"></script>
+	<script>
+		$(document).ready(function () {
+			$('#commentForm').on('submit', function (event) {
+				event.preventDefault();
+				var formData = $(this).serialize();
+
+				$.ajax({
+					url: '/Animal/AddComment',
+					type: 'POST',
+					data: formData,
+					success: function (response) {
+						if (response.success) {
+							$('#comments-table').append('<tr><td>' + response.commentText + '</td></tr>');
+
+							$('#text').val('');
+						} else {
+							alert(response.message);
+						}
+					},
+					error: function () {
+						alert('An error occurred while adding the comment.');
+					}
+				});
+			});
+		});
+
+	</script>
+}
